@@ -1,0 +1,5 @@
+Team Members:
+    - Yuri Ziemba Nunes
+
+Trello: https://trello.com/b/iiYbd5tu/sleep-outside-team-17
+Production App: https://sleepoutside-team17.netlify.app/
