@@ -6,7 +6,12 @@ function convertToJson(res) {
   }
 }
 
-export default class ProductData {
+export const Category = Object.freeze({
+  TENTS: 'tents',
+  BACKPACKS: 'backpacks',
+  SLEEPING_BAGS: 'sleeping-bags'
+});
+export class ProductData {
   constructor(category) {
     this.category = category;
     this.path = `../json/${this.category}.json`;
@@ -21,3 +26,6 @@ export default class ProductData {
     return products.find((item) => item.Id === id);
   }
 }
+
+
+export default ProductData;
