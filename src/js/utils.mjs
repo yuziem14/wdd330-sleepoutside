@@ -37,3 +37,10 @@ export function getSearchParam(name = '') {
   const params = new URLSearchParams(search);
   return params.get(name) || '';
 }
+
+export function renderListWithTemplate(templateFn, parentElement, list, clear = false, position = 'afterbegin') {
+  if(clear) parentElement.innerHTML = '';
+
+  const generatedTemplates = list.map(templateFn);
+  parentElement.insertAdjacentHTML(position, generatedTemplates.join(''));
+}
