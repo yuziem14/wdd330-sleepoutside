@@ -15,9 +15,25 @@ export function setLocalStorage(key, data) {
 }
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
-  qs(selector).addEventListener("touchend", (event) => {
+  qs(selector).addEventListener('touchend', (event) => {
     event.preventDefault();
     callback();
   });
-  qs(selector).addEventListener("click", callback);
+  qs(selector).addEventListener('click', callback);
+}
+
+/* Formatters */
+const currencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+export function formatCurrency(amount = 0) {
+  return currencyFormatter.format(amount);
+}
+
+export function getSearchParam(name = '') {
+  const { search } = window.location;
+  const params = new URLSearchParams(search);
+  return params.get(name) || '';
 }
