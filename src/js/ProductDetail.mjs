@@ -1,11 +1,12 @@
-import { setLocalStorage, getLocalStorage } from './utils.mjs';
-import { formatCurrency, CART_STORAGE_KEY } from './utils.mjs';
+import { formatCurrency } from './utils.mjs';
+import ShoppingCart from './ShoppingCart.mjs'
 
 export default class ProductDetail {
     constructor(productId, dataSource) {
         this.productId = productId;
         this.product = {};
         this.dataSource = dataSource;
+        this.shoppingCart = new ShoppingCart(null, null);
     }
 
     init() {
@@ -19,9 +20,7 @@ export default class ProductDetail {
     }
 
     addProductToCart() {
-        const productsInCart = getLocalStorage(CART_STORAGE_KEY) || [];
-        productsInCart.push(this.product);
-        setLocalStorage(CART_STORAGE_KEY, productsInCart);
+        this.shoppingCart.addItem(this.product);
       }
 
     renderProductDetails() {
