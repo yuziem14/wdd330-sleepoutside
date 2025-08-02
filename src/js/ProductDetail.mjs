@@ -47,7 +47,7 @@ function renderTemplate(product = {}) {
     const nameWithoutBrandValue = product.NameWithoutBrand;
     brandName.textContent = product.Brand.Name;
     nameWithoutBrand.textContent = nameWithoutBrandValue;
-    image.setAttribute('src', product.Image);
+    image.setAttribute('src', product.Images.PrimaryLarge);
     image.setAttribute('alt', nameWithoutBrandValue);
     price.textContent = formatCurrency(product.FinalPrice);
     color.textContent = product.Colors[0].ColorName;
