@@ -10,8 +10,19 @@ export default class ShoppingCart {
 
     addItem(item = null) {
         if(!item) return;
+        const itemToAdd = {
+            quantity: 1,
+            product: item
+        }
+        
+        let itemIndex = this.items.findIndex(({product}) => product.Id == item.Id);
 
-        this.items.push(item);
+        if(itemIndex != -1) {
+            this.items[itemIndex].quantity += 1;
+        } else {
+            this.items.push(itemToAdd);
+        }
+
         setLocalStorage(CART_STORAGE_KEY, this.items);
     }
     
@@ -29,7 +40,7 @@ export default class ShoppingCart {
     }
 
     getPriceTotal() {
-        return this.items.reduce((amount, item) => amount + item.FinalPrice, 0);
+        return this.items.reduce((amount, item) => amount + (item.product.FinalPrice * item.quantity), 0);
     }
 
     renderTotal() {
@@ -40,11 +51,17 @@ export default class ShoppingCart {
         const cartTotalElement = document.querySelector('.cart-total');
         cartTotalElement.innerHTML = [cartTotalElement.textContent, `<strong>${formatCurrency(this.getPriceTotal())}</strong>`].join(' ');
     }
+
+    getItems() {
+        return this.items;
+    }
 }
 
 const template = document.getElementById('cart-card-template');
 function generateCartItemTemplate(item = {}) {
-  const productLink = `/product_pages/?product=${item.Id}`;
+  const { quantity, product} = item;
+
+  const productLink = `/product_pages/?product=${product.Id}`;
 
   const cartItemElement = template.content.cloneNode(true);
     const [
@@ -53,18 +70,18 @@ function generateCartItemTemplate(item = {}) {
         nameLink,
         name,
         color,
-        quantity,
+        quantityElement,
         price,
     ] = cartItemElement.querySelectorAll('.cart-card__image, .cart-card__image img, a:has(.card__name), .card__name, .cart-card__color, .cart-card__quantity, .cart-card__price');
    
   imageLink.setAttribute('href', productLink);
-  image.setAttribute('src', item.Images.PrimarySmall);
-  image.setAttribute('alt', item.Name);
+  image.setAttribute('src', product.Images.PrimarySmall);
+  image.setAttribute('alt', product.Name);
   nameLink.setAttribute('href', productLink);
-  name.textContent = item.Name;
-  color.textContent = item.Colors[0].ColorName;
-  quantity.textContent = '1';
-  price.textContent = formatCurrency(item.FinalPrice);
+  name.textContent = product.Name;
+  color.textContent = product.Colors[0].ColorName;
+  quantityElement.textContent = quantity;
+  price.textContent = formatCurrency(product.FinalPrice);
 
   return cartItemElement.querySelector('li').outerHTML;
 }
