@@ -44,3 +44,26 @@ export function renderListWithTemplate(templateFn, parentElement, list, clear = 
   const generatedTemplates = list.map(templateFn);
   parentElement.insertAdjacentHTML(position, generatedTemplates.join(''));
 }
+
+export function renderWithTemplate(template, parentElement, data, callback) {
+  const fragment = document.createRange().createContextualFragment(template);
+  parentElement.replaceChildren(fragment);
+  if(callback) callback(data);
+}
+
+export async function loadTemplate(path = '') {
+  const response = await fetch(path);
+  return await response.text();
+}
+
+export async function loadHeaderFooter() {
+  const header = document.querySelector('#main-header');
+  const footer = document.querySelector('#main-footer');
+  const headerTemplate = await loadTemplate('/partials/header.html');
+  const footerTemplate = await loadTemplate('/partials/footer.html');
+
+  renderWithTemplate(headerTemplate, header);
+  renderWithTemplate(footerTemplate, footer);
+}
+
+export const CART_STORAGE_KEY = 'so-cart';

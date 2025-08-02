@@ -1,48 +1,16 @@
-import { getLocalStorage, formatCurrency } from './utils.mjs';
+import { loadHeaderFooter } from './utils.mjs';
+import ShoppingCart from './ShoppingCart.mjs';
+
+loadHeaderFooter();
+
+const productListDOM = document.querySelector('.product-list');
+const cartFooterElement = document.querySelector('.cart-footer');
+
+const shoppingCart = new ShoppingCart(productListDOM, cartFooterElement);
 
 function renderCartContents() {
-  const cartItems = getLocalStorage('so-cart') || [];
-
-  renderItems(cartItems);
-  calculateAndDisplayCartTotal(cartItems);
-}
-
-function renderItems(cartItems = []) {
-  const NO_PRODUCTS_TEMPLATE = `<h3>No products added to cart.</h3>`;
-
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
-  document.querySelector('.product-list').innerHTML = htmlItems.length == 0 ? NO_PRODUCTS_TEMPLATE : htmlItems.join('');
-
-}
-
-function calculateAndDisplayCartTotal(items = []) {
-  if(items.length == 0) return;
-
-  const cartFooterElement = document.querySelector('.cart-footer');
-  if(cartFooterElement.classList.contains('hide')) cartFooterElement.classList.remove('hide');
-
-  const cartTotalElement = document.querySelector('.cart-total');
-  const totalAmount = items.reduce((amount, item) => amount + item.FinalPrice, 0);
-  cartTotalElement.innerHTML = [cartTotalElement.textContent, `<strong>${formatCurrency(totalAmount)}</strong>`].join(' ');
-}
-
-function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
-  <a href="#" class="cart-card__image">
-    <img
-      src="${item.Image}"
-      alt="${item.Name}"
-    />
-  </a>
-  <a href="#">
-    <h2 class="card__name">${item.Name}</h2>
-  </a>
-  <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
-</li>`;
-
-  return newItem;
+  shoppingCart.renderList();
+  shoppingCart.renderTotal();
 }
 
 renderCartContents();
