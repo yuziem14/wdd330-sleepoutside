@@ -16,7 +16,7 @@ export default class ShoppingCart {
     }
     
     renderList() {
-        if(this.items.lenght == 0) {
+        if(this.items.length == 0) {
             this.cartListElement.innerHTML = `<h3>${this.getEmptyCardMessage()}</h3>`;
             return;
         }
@@ -33,6 +33,8 @@ export default class ShoppingCart {
     }
 
     renderTotal() {
+        if(this.items.length == 0) return;
+        
         if(this.cartFooter.classList.contains('hide')) this.cartFooter.classList.remove('hide');
 
         const cartTotalElement = document.querySelector('.cart-total');
@@ -56,7 +58,7 @@ function generateCartItemTemplate(item = {}) {
     ] = cartItemElement.querySelectorAll('.cart-card__image, .cart-card__image img, a:has(.card__name), .card__name, .cart-card__color, .cart-card__quantity, .cart-card__price');
    
   imageLink.setAttribute('href', productLink);
-  image.setAttribute('src', item.Image);
+  image.setAttribute('src', item.Images.PrimarySmall);
   image.setAttribute('alt', item.Name);
   nameLink.setAttribute('href', productLink);
   name.textContent = item.Name;

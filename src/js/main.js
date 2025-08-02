@@ -1,10 +1,24 @@
-import { Category, ProductData } from './ProductData.mjs'
-import ProductList from './ProductList.mjs'
 import { loadHeaderFooter } from './utils.mjs';
+import { categories } from './ProductData.mjs'
 
-const listElement = document.querySelector('.product-list');
+const categoriesList = document.querySelector('.categories');
 
-const tentsDataSource = new ProductData(Category.TENTS);
-const productList = new ProductList(Category.TENTS, tentsDataSource, listElement);
+function renderCategories() {
+    const html = Object.keys(categories).map(key => {
+        const category = categories[key];
+        const params = (new URLSearchParams({ category: category.value })).toString();
+        const link = ['/product_listing/index.html', params.toString()].join('?');
+
+        return `
+             <a class="category" href="${link}">
+                <img class="category__icon" src="${category.iconUrl}" alt="${category.title} Category Icon">
+                <p class="category__name">${category.title}</p>
+            </a>
+        `
+    }).join('');
+
+    categoriesList.innerHTML = html;
+}
 
 loadHeaderFooter();
+renderCategories();
