@@ -1,0 +1,48 @@
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    padding: 1rem 0;
+
+    & .form-section {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    
+        & fieldset {
+            display: flex;
+            flex-direction: column;
+            row-gap: 0.5rem;
+            border: none;
+            padding: 1rem 0.2rem;
+
+            & legend {
+                font-weight: bold;
+                font-size: 1.15rem;
+            }
+
+            & .input-group, & .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            & .form-group {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;   
+            }
+
+            & input {
+                width: 100%;
+                min-height: 2rem;
+                padding: 0 0.5rem;
+
+                &:user-invalid {
+                    border: 1px solid red;
+                }
+            }
+        }
+    }
+}

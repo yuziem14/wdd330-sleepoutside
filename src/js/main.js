@@ -1,5 +1,5 @@
 import { loadHeaderFooter } from './utils.mjs';
-import { categories } from './ProductData.mjs'
+import { categories } from './ExternalServices.mjs'
 
 const categoriesList = document.querySelector('.categories');
 
