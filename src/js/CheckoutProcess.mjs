@@ -5,7 +5,8 @@ export default class CheckoutProcess {
     #FIRST_ITEM_SHIPPING_COST = 10;
     #ITEM_SHIPPING_COST  = 2;
 
-    constructor(shoppingCart, outputSelector) {
+    constructor(externalServices, shoppingCart, outputSelector) {
+        this.externalServices = externalServices;
         this.shoppingCart = shoppingCart;
         this.outputSelector = outputSelector;
         this.tax = 0;
@@ -59,5 +60,39 @@ export default class CheckoutProcess {
         taxElement.textContent = formatCurrency(this.tax);
         shippingElement.textContent = formatCurrency(this.shipping);
         totalElement.textContent = formatCurrency(this.orderTotal);
+    }
+
+    packageItems() {
+        const items = this.shoppingCart.items.map(item => ({
+            id: item.product.Id,
+            name: item.product.Name,
+            price: item.product.FinalPrice,
+            quantity: item.quantity
+        }))
+
+        return {
+            items,
+            orderTotal: this.orderTotal,
+            shipping: this.shipping,
+            tax: this.tax
+        }
+    }
+
+    async checkout(form) {
+        const formData = new FormData(form);
+        const json = {};
+
+        formData.forEach((value, key) => {
+            json[key] = value;
+        });
+
+        const data = {
+            ...json,
+            ...this.packageItems(),
+        }
+
+        data['orderDate'] = new Date();
+
+        return await this.externalServices.checkout(data);
     }
 }

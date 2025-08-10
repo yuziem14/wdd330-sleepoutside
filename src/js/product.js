@@ -1,11 +1,11 @@
 import { getSearchParam, loadHeaderFooter } from './utils.mjs';
-import ProductData from './ProductData.mjs';
+import ExternalServices from './ExternalServices.mjs';
 import ProductDetail from './ProductDetail.mjs';
 
 loadHeaderFooter();
 
 const PRODUCT_PARAM = 'product';
-const dataSource = new ProductData('tents');
+const dataSource = new ExternalServices('tents');
 const productId = getSearchParam(PRODUCT_PARAM);
 
 const productDetail = new ProductDetail(productId, dataSource);

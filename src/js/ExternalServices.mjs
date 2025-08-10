@@ -35,7 +35,7 @@ export const categories = {
       value: Category.SLEEPING_BAGS
   },
 }
-export class ProductData {
+export class ExternalServices {
   constructor(category) {
     this.category = category;
     this.baseUrl = import.meta.env.VITE_SERVER_URL;
@@ -53,7 +53,19 @@ export class ProductData {
 
     return data.Result;
   }
+
+  async checkout(data = {}) {
+    const response = await fetch([this.baseUrl, 'checkout'].join(''), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    return await convertToJson(response);
+  }
 }
 
 
-export default ProductData;
+export default ExternalServices;
